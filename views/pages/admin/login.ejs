@@ -1,0 +1,41 @@
+
+<%- include('../../common/head') %>
+
+<body>
+    <header>
+      <%- include('../../common/header',{data : data}) %>
+    </header>
+    
+    <main>
+        <div class="container">
+            <div>
+
+                  <form method="post" action="/login">
+                    <p>
+                      <label for="username">Username:</label>
+                      <input type="text" name="username" id="username">
+                    </p>
+                    <p>
+                      <label for="password">Password:</label>
+                      <input type="text" name="password" id="password">
+                    </p>
+                    <p>
+                      <input type="submit" value="Login">
+                    </p>
+                  </form>
+
+
+
+
+
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <%- include('../../common/footer') %>
+    </footer>
+
+
+</body>
+</html>

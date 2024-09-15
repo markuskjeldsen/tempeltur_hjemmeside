@@ -1,0 +1,54 @@
+<% try {if(data.user) {%>
+<%= data.user %>
+<%= data.pass %>
+<%}} catch {}%>
+
+<%- include('../common/head') %>
+
+<body >
+    <header>
+        <%- include('../common/header') %>
+    </header>
+    
+    <main>
+        <h1 class="text-center" style="font-size:400%"> Tempeltur 2024</h1>
+        <p class="text-center" style="font-size:200%" >  <i> 16/10 - 18/10 </i> </p>
+
+        
+        <div class="container-fluid">
+            <img src="/images/copenhagen_temple.jpg" class="img-fluid" style="display: block ;max-height: 600px; margin-left:auto; margin-right: auto;"  alt="Responsive image">
+        
+        </div>
+
+        <div class="container">
+            <div class="col col-md-12">
+
+              
+
+
+
+                <p>
+                    <%- data.res.locals.config.forside %>
+                </p>
+
+
+                <p>
+                    
+                </p>
+                
+            </div>
+        </div>
+
+
+    </main>
+
+
+
+    <footer>
+        <%- include('../common/footer') %>
+    </footer>
+
+
+</body>
+</html>
+

@@ -1,0 +1,155 @@
+
+<%- include('../../common/head') %>
+
+
+
+<style>
+
+.kasse {
+    background-color: azure;
+    outline: 2px;
+    outline-color: black;
+    outline-style: solid;
+    margin: 3px;
+    padding: 3px;
+}
+
+.ydrekasse {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+
+
+</style>
+
+
+
+<body>
+    <header>
+        <%- include('../../common/header') %>
+    </header>
+    
+
+
+    <main>
+        <div class="container">
+            <div class="col col-md-12">
+
+
+    <%  if(!data.req.query.id){ %>
+
+        <h3> alle sange givet ved titel</h3>
+    <div class="ydrekasse">
+
+        <% data.res.locals.sange.forEach(song => { %>
+        <div class="kasse">
+            <form action="/admin/sange" method="post" >
+                <input type="hidden" name="id" value="<%= song.id %>" >
+                <input type="hidden" name="title" value="<%= song.title %>" >
+    
+                <div>
+                    <p><%= song.title %></p>
+                </div>
+                <input type="submit" name="action" value="delete">
+            </form>
+    
+             
+            <form action="/admin/sange" method="get">
+                <input type="hidden" name="id" value="<%= song.id %>">
+                <input type="submit" value="update">
+            </form>
+        </div>
+
+            <br>
+
+            <% }) %>
+    </div>
+
+
+    <br>
+    <br>
+    <br>
+
+
+    <% } else {  %>
+
+
+
+        <% data.res.locals.sange.forEach(song => { %>
+
+
+        <% if(song.id == data.req.query.id) { %>
+
+        <form action="/admin/sange" method="post" >
+            <label for="fname">ændring af sang</label> 
+            <br>
+            <br>
+            <label for="fname">Titel</label>
+            <br>
+            <input type="hidden" name="id" value="<%= song.id %>" >
+            <textarea name="title" id="title" rows="2" cols="40"><%= song.title %></textarea>
+            <br>
+            <label for="fname">sangtekst</label> 
+            <br>
+            <textarea name="lyric" id="lyric" rows=30" cols="80"><%= song.lyric %></textarea>
+
+            <input type="submit" name="action" value="update">
+        </form>
+
+        <% } %>
+
+
+        <% }) %>
+
+
+   
+
+    <br>
+    <br>
+    <br>
+
+
+    <% } %>
+
+
+
+
+
+                <form action="/admin/sange" method="post" >
+                    <label for="fname">tilføjelse af sang</label> 
+                    <br>
+                    <br>
+                    <label for="fname">Titel</label>
+                    <br>
+                    <textarea name="title" id="title" rows="2" cols="40"></textarea>
+                    <br>
+                    <label for="fname">sangtekst</label> 
+                    <br>
+                    <textarea name="lyric" id="lyric" rows=30" cols="80"></textarea>
+
+                    <input type="submit" name="action" value="add">
+                </form> 
+
+
+
+
+
+
+
+
+
+                
+            </div>
+        </div>
+    </main>
+
+
+
+    <footer>
+        <%- include('../../common/footer') %>
+    </footer>
+
+
+</body>
+</html>

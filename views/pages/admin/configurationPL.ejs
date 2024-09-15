@@ -1,0 +1,89 @@
+
+<%- include('../../common/head') %>
+
+
+<style>
+    table, th, td {
+      border: 1.5px solid black;
+    }
+    #textboxid
+    {
+    height:500px;
+    font-size:14pt;
+    }
+</style>
+
+<body>
+    <header>
+        <%- include('../../common/header') %>
+    </header>
+    
+
+
+    <main>
+
+        <div class="container">
+            <div class="col col-md-12">
+
+                <h2> Pigelejr tekst </h2>
+
+
+                <form action="/admin/configuration" method="post">
+                    <label for="fname">home page tekst:</label>
+                    <br>
+                    <textarea name="home_page" rows="4" cols="80"><%= data.res.locals.configurationPL.home_page%></textarea>
+                    <br>
+                    <input type="submit" value="submit">
+
+                    <h4> tilmeldnings siden </h4>
+    
+                    <label for="fname">øverste tekst på tilmeldnings siden</label>
+                    <br>
+                    <textarea name="register" rows="4" cols="80"><%= data.res.locals.configurationPL.register %></textarea>
+                    <br>
+                    <label for="fname">teksten i midten:</label>
+                    <textarea name="signuplink" rows="4" cols="80"><%= data.res.locals.configurationPL.signuplink %></textarea>
+                    <br>
+                    <label for="fname">teksten i bunden:</label>
+                    <textarea name="eftertilmeld" rows="4" cols="80"><%= data.res.locals.configurationPL.eftertilmeld %></textarea>
+                    <br>
+                    <input type="submit" value="submit">
+
+                    <h4>Info siden</h4>
+
+                    <label for="fname">øverste tekst på tilmeldnings siden</label>
+                    <br>
+                    <textarea name="schedule" rows="4" cols="80"><%= data.res.locals.configurationPL.schedule %></textarea>
+                    <br>
+                    <label for="fname">teksten i midten:</label>
+                    <textarea name="info" rows="4" cols="80"><%= data.res.locals.configurationPL.info %></textarea>
+                    <br>
+                    <label for="fname">teksten i bunden:</label>
+                    <textarea name="tidsplan" rows="4" cols="80"><%= data.res.locals.configurationPL.tidsplan %></textarea>
+                    <br>
+                    <label for="fname">teksten i bunden:</label>
+                    <textarea name="deltagerinfo" rows="4" cols="80"><%= data.res.locals.configurationPL.deltagerinfo %></textarea>
+                    <br>
+                    <label for="fname">teksten i bunden:</label>
+                    <textarea name="lederinfo" rows="4" cols="80"><%= data.res.locals.configurationPL.lederinfo %></textarea>
+                    <br>
+                    <input type="submit" value="submit">
+                </form> 
+
+
+
+
+                
+            </div>
+        </div>
+    </main>
+
+
+
+    <footer>
+        <%- include('../../common/footer') %>
+    </footer>
+
+
+</body>
+</html>

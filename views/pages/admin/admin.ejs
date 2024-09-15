@@ -1,0 +1,37 @@
+
+<%- include('../../common/head') %>
+
+<body>
+    <header>
+        <%- include('../../common/header',{data : data}) %>
+    </header>
+    
+
+
+    <main>
+        <div class="container">
+            <div class="col col-md-12">
+                <h2>
+                    Adminpage
+                </h2>
+                <p> This is About body </p>
+
+                <ol style="font-size: xx-large;"  >
+                    <li> <a href="/admin/schedule" > tidsplan </a> </li>
+                    <li> <a href="/admin/configuration" > config </a> </li>
+                    <li> <a href="/admin/sange" > Sang tektster </a> </li>
+                </ol>
+
+            </div>
+        </div>
+    </main>
+
+
+
+    <footer>
+        <%- include('../../common/footer') %>
+    </footer>
+
+
+</body>
+</html>

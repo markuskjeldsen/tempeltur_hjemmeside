@@ -1,0 +1,71 @@
+<%- include('../common/head') %>
+
+<style>
+    table, th, td {
+      border: 1.5px solid black;
+    }
+</style>
+
+<body>
+    <header>
+        <%- include('../common/header',{data : data}) %>
+    </header>
+    
+
+
+    <main>
+
+            <div class="container">
+
+                <h2>
+                    Pigelejr!!
+                </h2>
+
+                <div class="row-cols-3">
+
+                    <div class="col col-md-12" >
+
+                        <p>
+                            <%- data.res.locals.config.program %>
+                        </p>
+        
+
+                    </div>
+                        
+                        
+                        
+                        
+                    <div class="col" >
+                    </div>
+
+
+                </div>
+
+
+
+
+
+
+            
+            </div>
+    
+           
+    
+
+
+
+
+
+
+    </main>
+
+
+
+    <footer>
+        <%- include('../common/footer') %>
+    </footer>
+
+
+</body>
+</html>
+

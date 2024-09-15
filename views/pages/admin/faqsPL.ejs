@@ -1,0 +1,64 @@
+
+<%- include('../../common/head') %>
+
+<body>
+    <header>
+        <%- include('../../common/header') %>
+    </header>
+    
+
+
+    <main>
+        <div class="container">
+            <div class="col col-md-12">
+
+                
+                    <h2>Ofte stillede spørgsmål</h2>
+
+                    <h3>tilføj spørgmsål</h3>
+
+                    <form action="/admin/faq" method="post" style="margin-bottom: 20px;">
+                        
+                         
+                        
+                        <input type="text" id="question" name="question"> <label> spørgsmål </label> <br>
+                        <input type="text" id="answer" name="answer"> <label> svar </label> <br>
+                        <input type="submit" name="action" value="Add" /> 
+                    </form>
+
+
+                    <h3>rediger spørgmsål</h3>
+
+
+                    <ul>
+                        <% data.res.locals.faqs.forEach(faq => { %>
+                        <li>
+                            <form action="/admin/faq" method="post" name="<%= faq.id %>" style="margin-bottom: 20px;">
+                                    <label id=" <%= faq.id %> " > id: <%= faq.id %> </label> <br>
+                                    <input type="hidden" id="id" name="id" value="<%= faq.id %>">
+                                    <input value="<%= faq.question %>" type="text" id="question" name="question"> <label> spørgsmål </label> <br>
+                                    <input value="<%= faq.answer %>" type="text" id="answer" name="answer"> <label> svar </label> <br>
+                                    
+                                    <input type="submit" name="action" value="Delete" /> 
+                                    <input type="submit" name="action" value="Update" />
+                            </form>
+                        </li>
+                        <% }); %>
+                    </ul>
+        
+
+
+                
+            </div>
+        </div>
+    </main>
+
+
+
+    <footer>
+        <%- include('../../common/footer') %>
+    </footer>
+
+
+</body>
+</html>

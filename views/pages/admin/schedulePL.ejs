@@ -1,0 +1,264 @@
+
+<%- include('../../common/head') %>
+
+
+<style>
+    table, th, td {
+      border: 1.5px solid black;
+    }
+</style>
+
+<body>
+    <header>
+        <%- include('../../common/header') %>
+    </header>
+    
+
+
+    <main>
+
+        <div class="container">
+            <div class="col col-md-12">
+
+                <h3> Pigelejr Schedule </h3>
+
+
+
+                <% if (data.req.query.keyword) { %>
+                <% i = data.req.query.keyword %>
+
+                <h3> du ændrer i <%= data.week[i-1] %> </h3>
+                <p>man kan kun ændre i en aktivitet af gangen</p>
+
+
+
+
+                <% data.schedule.forEach(element => { %>
+                    <%  if(element.day == i-1){ %> 
+
+
+                <td align="center" height="50">                     
+                    
+
+                </td>
+
+                    <form style="margin: 0%;" action="/admin/schedule" method="post" >
+                        <label for="id">id:</label>
+                        <input value="<%= element.id %>" type="number" id="id" name="id"> <br>
+
+                        <label for="info">info:</label>
+                        <input value="<%= element.info %>" type="text" id="info" name="info"> <br>
+
+                        <label for="start_time">start_time:</label>
+                        <input step="0.5" value="<%= element.start_time %>" type="number" id="start_time" name="start_time"> <br>
+
+                        <label for="day">day: mandag = 0, tirsdag = 1...</label>
+                        <input value="<%= element.day %>" type="number" id="day" name="day"> <br>
+
+                        <label for="duration">duration:</label>
+                        <input value="<%= element.duration %>" type="number" id="duration" name="duration"> <br>
+
+                        <input type="submit" name="action" value="Update" />                      
+                        <input type="submit" name="action" value="Delete" />
+
+                    </form> 
+                      <br>
+                      <br>
+                      <% } %>
+                      <% }) %>
+
+
+                      <div class="container">
+                        <table width="50%">    
+                            <td align="center" height="50" width="100">
+                                <b>klokken</b>
+                            </td>
+                            <% for (let i = 8; i < 23; i++) { %>
+                            <td align="center" height="50" width="100">
+                                <b> <%= i %> </b>
+                            </td>
+                            <% } %>
+        
+                            <% for( let i = 0; i < 6; i++ ) { %>
+        
+                            <tr>
+       
+        
+                                <td align="center" height="50">
+                                    <b> <%= data.week[i] %> </b>
+                                </td>
+                                <% data.schedule.forEach(element => { %>
+                                    <%  if(element.day == i){ %> 
+                                <td colspan = "<%= element.duration %>" align="center" height="50"> 
+        
+                                    <%= element.info %>
+                                    
+                                
+                                </td>
+                                    <% } %>
+        
+                                <% }) %>
+                            </tr>
+        
+                            <% } %>
+                        </table>
+                        </div>
+
+
+
+
+                 
+                <% } else {%>
+                
+
+                    <form style="margin: 0%;" action="/admin/schedule" method="post" >
+                        <label for="id">id:</label>
+                        <input type="number" id="id" name="id"> <br>
+
+                        <label for="info">info:</label>
+                        <input  type="text" id="info" name="info"> <br>
+
+                        <label for="start_time">start_time:</label>
+                        <input step="0.5"  type="number" id="start_time" name="start_time"> <br>
+
+                        <label for="duration">duration:</label>
+                        <input  type="number" id="duration" name="duration"> <br>
+
+                        <label for="day">day: mandag = 0, tirsdag = 1...</label>
+                        <input type="number" id="day" name="day"> <br>
+                        
+                        <input type="submit" name="action" value="Add" >
+                      </form> 
+
+
+
+                <div class="row">
+                    <div style="float: left;width: 40%;">
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th></th>
+
+                                <% for(let i = 0; i < 5; i++){ %>
+
+                                    <th><b><%= data.week[i] %>
+
+                                    <a href="/admin/schedule?keyword=<%= i+1 %>" >
+                                        <button type="button" onclick="" >edit</button> 
+                                    </a>
+
+                                </b></th>
+                                    
+
+                                <% } %>
+
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <!-- i er tid så man skal tjekke igennem alle dage med det tidspunkt og hvor langt det er -->
+                            <% for (let i = 16; i < (23*2); i++) { %>     
+                                <tr>
+                                    <td style="padding-bottom: 0px;padding-top: 0px;" >  
+                                    <b>                        
+                                    <% if( ((i)/2) % 1 ){ %>
+                                    <%= (i/2)-0.5 %>:30
+                                    <% } else { %>
+                                    <%= i/2 %>:00
+                                    <% } %>
+                                    </b>
+                                    </td>
+
+                                    <% data.schedule.forEach(element => { %>
+                                        <% if (element.start_time === i/2) { %> 
+                                            <td rowspan="<%= element.duration %>">
+                                                <%- element.info %>
+                                            </td>
+                                        <% } %>
+                                    <% }) %>
+                                </tr>
+
+                            <% } %>
+                        </tbody>
+                    </table>
+
+
+                </div>
+                <div style="float: left;width: 40%;">
+
+
+
+                <div class="container">
+                <table width="50%">
+
+                    <td align="center" height="50" width="100">
+                        <b>Ændre</b>
+                    </td>
+
+                    <td align="center" height="50" width="100">
+                        <b>Dag</b>
+                    </td>
+                    <% for (let i = 8; i < 47; i++) { %>
+                    <td align="center" height="50" width="100">
+                        <b> <%= i %> </b>
+                    </td>
+                    <% } %>
+
+
+
+
+                    <% for( let i = 0; i < 6; i++ ) { %>
+
+                    <tr>
+                        <td align="center" height="50" width="100">
+                            <a href="/admin/schedule?keyword=<%= i+1 %>" >
+                            <button type="button" onclick="" >edit</button> 
+                        </a>
+                        </td>
+
+
+                        <td align="center" height="50">
+                            <b> <%= data.week[i] %> </b>
+                        </td>
+                        <% data.schedule.forEach(element => { %>
+                            <%  if(element.day == i){ %> 
+                        <td colspan = "<%= element.duration %>" align="center" height="50"> 
+
+                            <%= element.info %>
+                            
+                        
+                        </td>
+                            <% } %>
+
+                        <% }) %>
+                    </tr>
+
+                    <% } %>
+                </table>
+                
+                <% } %>
+                </div>
+
+
+            </div>
+        </div> 
+
+
+
+
+
+                
+    </div>
+    </div>
+    </main>
+
+
+
+    <footer>
+        <%- include('../../common/footer') %>
+    </footer>
+
+
+</body>
+</html>
