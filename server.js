@@ -39,8 +39,8 @@ app.use(session({
 
 const login = (req,res,next) => {
 
-    sql = "SELECT * from logged_in WHERE sessionid = ' " + req.sessionID + " ' "
-    db.get(sql,(err,row) => {
+    sql = "SELECT * from logged_in WHERE sessionid = (?)"
+    db.get(sql,[req.sessionID],(err,row) => {
         if (row) {
             req.session.authenticated = true
             next();
@@ -137,8 +137,7 @@ app.use((req,res,next) => {
 
 
 
-
-
+//get requests
 
 app.get('/',(req, res) => {
     res.render('pages/index', {data : {req : req, res : res}})
@@ -155,6 +154,169 @@ app.get('/tilmeldning',(req, res) => {
 app.get('/praktisk-info',(req, res) => {
     res.render('pages/praktisk-info', {data : {req : req, res : res}})
 });
+
+
+
+app.get('/login',(req, res) => {
+    
+    if(req.session.authenticated){
+        res.redirect('/admin/configuration')
+    } else {
+        res.render('pages/admin/login', {data : {req : req, res : res}})
+    }
+    
+});
+
+
+app.get('/admin/configuration', requireLogin ,(req,res) => {
+
+
+    res.render('pages/admin/configuration', {data : {req : req, res : res}})
+});
+
+
+
+
+// post request
+
+app.post('/login',(req, res) => {
+
+
+    const {username, password} = req.body;
+    
+    if(username && password){
+    
+            if(password === process.env.ADMIN_PASSWORD && username === process.env.ADMIN_USERNAME) {
+
+                sql = "INSERT INTO logged_in (sessionid) VALUES (?) "
+                db.run(sql,[req.sessionID],(err, row) => {
+                    if(err){
+                        console.log("an error happend with the database while loggin in")
+                    }
+                })
+
+
+                
+                req.session.authenticated = true;
+                req.session.user = {username, password}
+                res.redirect('login')
+
+                } else {
+                    res.status(403).json({msg : "bad password"})
+                }
+        
+        } else {
+            res.status(400).json({msg : "missing password"})
+        }
+    
+});
+
+
+
+app.post('/admin/configuration', requireLogin ,(req,res)=>{
+
+
+    sql = `INSERT INTO config (
+        forside,
+        tilmeldning,
+        program,
+        info) 
+        VALUES (?,?,?,?)`
+
+try {
+
+    db.run(sql,[
+        req.body.forside,
+        req.body.tilmeldning,
+        req.body.program,
+        req.body.info], (err) => {
+        if(err) {
+            console.log("something went wrong");
+            console.log(err);
+            return res.json({
+                message: err,
+                status: 400,
+                status: false,
+            });
+        } else {
+            console.log("configuration has been changed");
+        }
+    }) 
+
+
+} catch(error) {
+    
+    return res.json({
+        message: "something went wrong when changing configurationPL",
+        status: 400,
+        success : false,
+    })
+
+}
+
+    res.redirect('/admin/configuration')
+})
+
+
+
+
+
+
+
+/*
+
+chatgpt to upload files
+
+
+const express = require('express');
+const multer = require('multer');
+const path = require('path');
+const app = express();
+
+// Set up storage for uploaded files
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/'); // Directory to store the files
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname)); // Unique file name
+  }
+});
+
+const upload = multer({ storage: storage });
+
+// Set EJS as the view engine
+app.set('view engine', 'ejs');
+
+// Serve static files (e.g., images)
+app.use(express.static('uploads'));
+
+// Render upload form
+app.get('/upload', (req, res) => {
+  res.render('upload');
+});
+
+// Handle file uploads (multiple files)
+app.post('/upload', upload.array('photos', 5), (req, res) => {
+  const filePaths = req.files.map(file => file.filename); // Store filenames of uploaded files
+  res.render('gallery', { files: filePaths });
+});
+
+
+
+
+
+
+*/
+
+
+
+
+
+
+
+
+
 
 
 
