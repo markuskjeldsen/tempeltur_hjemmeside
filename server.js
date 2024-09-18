@@ -240,6 +240,7 @@ try {
             });
         } else {
             console.log("configuration has been changed");
+            res.redirect('/admin/configuration')
         }
     }) 
 
@@ -254,7 +255,6 @@ try {
 
 }
 
-    res.redirect('/admin/configuration')
 })
 
 
