@@ -21,6 +21,15 @@
           </li>
 
 
+
+          <% if (data.req.session.authenticated) { %>
+            <li class="nav-item">
+              <a class="nav-link" href="/config">configurer</a>
+            </li>
+          <% } %>
+
+
+
           <!--
           <li class="nav-item">
             <a class="nav-link" href="/pigelejr">Info</a>
