@@ -12,7 +12,7 @@ require('dotenv').config();
 //https://github.com/expressjs/express/blob/master/examples/auth/views/login.ejs
 
 
-const port = 3000
+const port = 8001
 const app = express();
 let sql
 const sqlpass = "'&GOG^7tx/gZ6{)D"
@@ -321,5 +321,5 @@ app.post('/upload', upload.array('photos', 5), (req, res) => {
 
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+  console.log(`Tempeltur listening on port: ${port}`)
 })
