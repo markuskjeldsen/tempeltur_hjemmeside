@@ -1,0 +1,10 @@
+version: '3'
+services:
+  hjemmeside:
+    build:
+      context: .
+      dockerfile: Dockerfile  # Assuming your Dockerfile is named Dockerfile
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./database.db:/usr/src/app/database.db     
