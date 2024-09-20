@@ -1,2 +1,2 @@
 git pull
-docker compose up -d --no-deps --build tempel
+docker compose up -d --no-deps --build
