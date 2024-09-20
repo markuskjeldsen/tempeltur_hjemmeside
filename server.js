@@ -181,6 +181,8 @@ app.get('/admin/configuration', requireLogin ,(req,res) => {
 
 app.post('/login',(req, res) => {
 
+    console.log("login attempt")
+
 
     const {username, password} = req.body;
     
@@ -200,12 +202,15 @@ app.post('/login',(req, res) => {
                 req.session.authenticated = true;
                 req.session.user = {username, password}
                 res.redirect('login')
+                console.log("login attempt succeded")
 
                 } else {
+                    console.log("login attempt failed")
                     res.status(403).json({msg : "bad password"})
                 }
         
         } else {
+            console.log("login attempt failed")
             res.status(400).json({msg : "missing password"})
         }
     
@@ -248,7 +253,7 @@ try {
 } catch(error) {
     
     return res.json({
-        message: "something went wrong when changing configurationPL",
+        message: "something went wrong when changing configuration",
         status: 400,
         success : false,
     })
