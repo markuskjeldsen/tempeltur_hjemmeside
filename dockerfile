@@ -1,5 +1,5 @@
 # Use a lightweight base image
-FROM node:alpine
+FROM node:slim
 
 # Set the working directory inside the container
 WORKDIR /usr/src/app
