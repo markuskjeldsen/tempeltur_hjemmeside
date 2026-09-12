@@ -358,7 +358,3 @@ app.post('/upload', upload.array('photos', 5), (req, res) => {
 });
 
 */
-
-app.listen(port, () => {
-  console.log(`Tempeltur listening on port: ${port}`)
-})
