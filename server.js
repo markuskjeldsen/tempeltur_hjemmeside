@@ -48,10 +48,10 @@ function initDatabase() {
             db.run(`
                 CREATE TABLE IF NOT EXISTS config (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    forside TEXT,
-                    tilmeldning TEXT,
-                    program TEXT,
-                    info TEXT
+                    forside TEXT NOT NULL DEFAULT '',
+                    tilmeldning TEXT NOT NULL DEFAULT '',
+                    program TEXT NOT NULL DEFAULT '',
+                    info TEXT NOT NULL DEFAULT ''
                 )
             `, (err) => {
                 if (err) return reject(err);
@@ -64,8 +64,37 @@ function initDatabase() {
                 )
             `, (err) => {
                 if (err) return reject(err);
-                resolve();
             });
+
+            db.get(
+                `SELECT COUNT(*) AS count FROM config`,
+                (err, row) => {
+                    if (err) return reject(err);
+
+                    if (row.count === 0) {
+                        db.run(`
+                            INSERT INTO config (
+                                forside,
+                                tilmeldning,
+                                program,
+                                info
+                            ) VALUES (?, ?, ?, ?)
+                        `, [
+                            '',
+                            '',
+                            '',
+                            ''
+                        ], (err) => {
+                            if (err) return reject(err);
+
+                            console.log('Default config row created');
+                            resolve();
+                        });
+                    } else {
+                        resolve();
+                    }
+                }
+            );
         });
     });
 }
