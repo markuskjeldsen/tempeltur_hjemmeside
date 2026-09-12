@@ -17,10 +17,58 @@ const app = express();
 let sql
 const sqlpass = "'&GOG^7tx/gZ6{)D"
 const week = ["Mandag","Tirsdag","Onsdag","Torsdag","Fredag","Lørdag"]
-const db = new sqlite.Database('./database.db',sqlite.OPEN_READWRITE,(err) => {
-    if (err) return console.error(err);
-})
+const db = new sqlite.Database(
+    path.join(__dirname, 'database.db'),
+    sqlite.OPEN_READWRITE | sqlite.OPEN_CREATE,
+    (err) => {
+        if (err) {
+            console.error('Could not open database:', err);
+            process.exit(1);
+        }
 
+        console.log('Database opened');
+
+        initDatabase()
+            .then(() => {
+                app.listen(port, () => {
+                    console.log(`Tempeltur listening on port: ${port}`);
+                });
+            })
+            .catch((err) => {
+                console.error('Database initialization failed:', err);
+                process.exit(1);
+            });
+    }
+);
+
+
+function initDatabase() {
+    return new Promise((resolve, reject) => {
+        db.serialize(() => {
+            db.run(`
+                CREATE TABLE IF NOT EXISTS config (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    forside TEXT,
+                    tilmeldning TEXT,
+                    program TEXT,
+                    info TEXT
+                )
+            `, (err) => {
+                if (err) return reject(err);
+            });
+
+            db.run(`
+                CREATE TABLE IF NOT EXISTS logged_in (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    sessionid TEXT NOT NULL
+                )
+            `, (err) => {
+                if (err) return reject(err);
+                resolve();
+            });
+        });
+    });
+}
 
 app.set('view engine', 'ejs')
 app.use(cors());
@@ -67,8 +115,12 @@ app.use(async (req, res, next) => {
         // query config
         const queryResult1 = await new Promise((resolve, reject) => {
             db.all('SELECT * FROM config ORDER BY id DESC', (err, rows) => {
-                if (err) reject(err);
-                resolve(rows);
+            if (err) {
+                reject(err);
+                return;
+            }
+
+            resolve(rows);            
             });
         });
 
@@ -271,8 +323,6 @@ try {
 /*
 
 chatgpt to upload files
-
-
 const express = require('express');
 const multer = require('multer');
 const path = require('path');
@@ -307,23 +357,7 @@ app.post('/upload', upload.array('photos', 5), (req, res) => {
   res.render('gallery', { files: filePaths });
 });
 
-
-
-
-
-
 */
-
-
-
-
-
-
-
-
-
-
-
 
 app.listen(port, () => {
   console.log(`Tempeltur listening on port: ${port}`)
